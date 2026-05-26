@@ -41,6 +41,7 @@ function App() {
             <Route path="/runs" component={Runs} />
             <Route path="/approvals" component={Approvals} />
             <Route path="/audit" component={Audit} />
+            <Route path="/reports" component={require('./pages/Reports').default} />
           </AdminGuard>
         </Switch>
       </div>
