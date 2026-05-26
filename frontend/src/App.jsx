@@ -1,14 +1,50 @@
 import React from 'react';
 import './App.css';
 import Header from './components/Header';
+import Nav from './components/Nav';
+import AdminGuard from './components/AdminGuard';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
+import Login from './pages/Login';
+import Skills from './pages/Skills';
+import Packages from './pages/Packages';
+import Suites from './pages/Suites';
+import Overlays from './pages/Overlays';
+import Customers from './pages/Customers';
+import Workspaces from './pages/Workspaces';
+import Entitlements from './pages/Entitlements';
+import CreditPools from './pages/CreditPools';
+import Agents from './pages/Agents';
+import Runs from './pages/Runs';
+import Approvals from './pages/Approvals';
+import Audit from './pages/Audit';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Dashboard />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Nav />
+        <Switch>
+          <Route path="/login" component={Login} />
+          <AdminGuard>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/skills" component={Skills} />
+            <Route path="/packages" component={Packages} />
+            <Route path="/suites" component={Suites} />
+            <Route path="/overlays" component={Overlays} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/workspaces" component={Workspaces} />
+            <Route path="/entitlements" component={Entitlements} />
+            <Route path="/credit-pools" component={CreditPools} />
+            <Route path="/agents" component={Agents} />
+            <Route path="/runs" component={Runs} />
+            <Route path="/approvals" component={Approvals} />
+            <Route path="/audit" component={Audit} />
+          </AdminGuard>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
