@@ -27,3 +27,4 @@ MANDATORY AFTER COMPLETION:
 - PostgreSQL and Redis configured
 - Docker Compose set up
 - Health endpoints and logging implemented
+\n## [2026-05-26T09:11:24Z] THU-28 Delivered\n- Migration created for runs/audit/usage.\n- New routes and metering hooked up.\n- Query endpoints for usage history per workspace/customer.\n- Ready for migration run and integration tests.\n

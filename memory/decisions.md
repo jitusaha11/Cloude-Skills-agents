@@ -26,3 +26,4 @@ MANDATORY AFTER COMPLETION:
 - Choose PostgreSQL for its reliability and feature set
 - Use Redis and BullMQ for efficient caching and queue management
 - Docker Compose for consistent local development environment
+\n## [2026-05-26T09:11:24Z] THU-28 Decisions\n- Store tool_calls and approvals as JSONB on skill_runs for fast retrieval.\n- Output stored as SHA-256 hash only to avoid heavy payloads; raw output remains external.\n- Usage charges recorded per run, linked to active credit pool when present; pools accumulate consumed/overage.\n- Minimal cohesive API surface for create/update/audit/charge to keep module boundaries clear.\n
