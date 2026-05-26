@@ -27,3 +27,4 @@ MANDATORY AFTER COMPLETION:
 - PostgreSQL and Redis configured
 - Docker Compose set up
 - Health endpoints and logging implemented
+\n## [2026-05-26T09:18:10Z] THU-29 Delivered\n- Risk tier model established.\n- Approval workflow endpoints added (request via evaluate, decision, evidence).\n- Blocked vs approved handling via run state updates.\n- Approval evidence recorded into audit logs.\n- Release-ready on feature branch.\n

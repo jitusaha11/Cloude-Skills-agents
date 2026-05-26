@@ -26,3 +26,4 @@ MANDATORY AFTER COMPLETION:
 - Choose PostgreSQL for its reliability and feature set
 - Use Redis and BullMQ for efficient caching and queue management
 - Docker Compose for consistent local development environment
+\n## [2026-05-26T09:18:10Z] THU-29 Decisions\n- Policy evaluation kept server-side with simple scope precedence (global/workspace/customer/skill).\n- SLA captured in minutes on gates; stored as deadline on approval_requests for escalation handling by future workers.\n- Evidence appended to approval_requests.evidence JSONB and mirrored into audit_logs for immutable trail.\n- Non-destructive DB changes with IF NOT EXISTS and ENUM guards for safer deploys.\n
