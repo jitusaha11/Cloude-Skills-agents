@@ -35,3 +35,11 @@ This project sets up the base architecture for the Enterprise Claude Skills plat
 
 ## License
 MIT
+### Suites & Overlays API (partial)
+- GET/POST/PUT/DELETE /api/suites
+- GET/POST/PUT/DELETE /api/overlays
+- POST /api/suites/:id/skills | /api/suites/:id/packages
+- POST /api/overlays/:id/skills | /api/overlays/:id/packages
+- POST /api/overlays/:overlay_id/suites
+- POST /api/activation/suites/workspace | /api/activation/suites/customer
+- POST /api/activation/overlays/workspace | /api/activation/overlays/customer
