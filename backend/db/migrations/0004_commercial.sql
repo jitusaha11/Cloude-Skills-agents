@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS workspaces (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Subscription plans and tiers
 CREATE TABLE IF NOT EXISTS subscription_plans (
   id SERIAL PRIMARY KEY,
   key TEXT UNIQUE NOT NULL,
@@ -24,7 +23,6 @@ CREATE TABLE IF NOT EXISTS subscription_plans (
   features JSONB NOT NULL DEFAULT '{}'::jsonb
 );
 
--- Optional plan tiers and credit bands (e.g., tiered pricing/limits)
 CREATE TABLE IF NOT EXISTS plan_tiers (
   id SERIAL PRIMARY KEY,
   plan_id INTEGER REFERENCES subscription_plans(id) ON DELETE CASCADE,
@@ -35,7 +33,6 @@ CREATE TABLE IF NOT EXISTS plan_tiers (
   UNIQUE(plan_id, tier_index)
 );
 
--- Active subscriptions per workspace (or customer-wide if workspace_id is NULL)
 CREATE TABLE IF NOT EXISTS subscriptions (
   id SERIAL PRIMARY KEY,
   customer_id INTEGER REFERENCES customers(id) ON DELETE CASCADE,
@@ -47,7 +44,6 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   UNIQUE(workspace_id, status) WHERE status='active'
 );
 
--- Credit pools (metered usage by period) at workspace scope
 CREATE TABLE IF NOT EXISTS credit_pools (
   id SERIAL PRIMARY KEY,
   workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE,
@@ -60,7 +56,6 @@ CREATE TABLE IF NOT EXISTS credit_pools (
   UNIQUE (workspace_id, period_start, period_end)
 );
 
--- Feature flags at workspace or customer
 CREATE TABLE IF NOT EXISTS feature_flags (
   id SERIAL PRIMARY KEY,
   scope TEXT NOT NULL CHECK (scope IN ('workspace','customer')),
@@ -72,7 +67,6 @@ CREATE TABLE IF NOT EXISTS feature_flags (
   UNIQUE(scope, workspace_id, customer_id, flag_key)
 );
 
--- License entitlements (skills/packages/suites/overlays) with expiration/approvals
 CREATE TYPE entitlement_kind AS ENUM ('skill','package','suite','overlay');
 CREATE TABLE IF NOT EXISTS license_entitlements (
   id SERIAL PRIMARY KEY,
@@ -88,7 +82,6 @@ CREATE TABLE IF NOT EXISTS license_entitlements (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Suite/overlay assignments at workspace level (activation model)
 CREATE TABLE IF NOT EXISTS workspace_suite_assignments (
   workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE,
   suite_id INTEGER REFERENCES department_suites(id) ON DELETE CASCADE,
@@ -105,7 +98,6 @@ CREATE TABLE IF NOT EXISTS workspace_overlay_assignments (
   PRIMARY KEY (workspace_id, overlay_id)
 );
 
--- Agent seats (licensed users/agents)
 CREATE TABLE IF NOT EXISTS agent_seats (
   id SERIAL PRIMARY KEY,
   workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE,
