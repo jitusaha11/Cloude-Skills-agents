@@ -43,3 +43,13 @@ MIT
 - POST /api/overlays/:overlay_id/suites
 - POST /api/activation/suites/workspace | /api/activation/suites/customer
 - POST /api/activation/overlays/workspace | /api/activation/overlays/customer
+
+### Commercial API (partial)
+- Customers: GET/POST /api/customers
+- Workspaces: GET/POST /api/workspaces
+- Plans: GET/POST /api/plans, POST /api/plans/:plan_id/tiers
+- Subscriptions: GET/POST /api/subscriptions
+- Feature Flags: POST /api/feature-flags
+- Entitlements: GET/POST /api/entitlements
+- Credit Pools: GET/POST /api/credit-pools
+- Activation Check: GET /api/activation/workspace/:id
