@@ -3,6 +3,19 @@ const { pool } = require('../lib/db');
 const router = express.Router();
 const q = (t, p = []) => pool.query(t, p).then(r => r.rows);
 
+async function skillIsSafe(skill_id){
+  const rows = await q(`SELECT s.*, ss.pinned_ref FROM skills s LEFT JOIN skill_sources ss ON ss.id=s.source_id WHERE s.id=$1`, [skill_id]);
+  const s = rows[0];
+  if (!s) return { allowed:false, reasons:['not_found'] };
+  const reasons=[];
+  if (s.quarantined) reasons.push('quarantined');
+  if (s.review !== 'reviewed') reasons.push('unreviewed');
+  if (!s.pinned_commit and !s.pinned_ref) reasons.push('unpinned');
+  if (!s.instruction_only and s.trust !== 'trusted' and !s.sandbox_required) reasons.push('sandbox_required_not_set');
+  return { allowed: reasons.length===0, reasons };
+}
+
+
 // Suites CRUD
 router.get('/suites', async (_req, res) => res.json(await q('SELECT * FROM department_suites ORDER BY id DESC')));
 router.post('/suites', async (req, res) => {
@@ -45,6 +58,8 @@ router.delete('/overlays/:id', async (req, res) => { await q('DELETE FROM indust
 
 // Composition endpoints (add/remove skills/packages)
 router.post('/suites/:id/skills', async (req, res) => {
+  const safe = await skillIsSafe(req.body.skill_id);
+  if (!safe.allowed) return res.status(400).json({ error: 'skill_not_safe', reasons: safe.reasons });
   const id = req.params.id; const { skill_id } = req.body;
   const rows = await q('INSERT INTO suite_included_skills(suite_id,skill_id) VALUES ($1,$2) ON CONFLICT DO NOTHING RETURNING *', [id, skill_id]);
   res.status(201).json(rows[0] || { inserted: false });
@@ -55,6 +70,8 @@ router.post('/suites/:id/packages', async (req, res) => {
   res.status(201).json(rows[0] || { inserted: false });
 });
 router.post('/overlays/:id/skills', async (req, res) => {
+  const safe = await skillIsSafe(req.body.skill_id);
+  if (!safe.allowed) return res.status(400).json({ error: 'skill_not_safe', reasons: safe.reasons });
   const id = req.params.id; const { skill_id } = req.body;
   const rows = await q('INSERT INTO overlay_included_skills(overlay_id,skill_id) VALUES ($1,$2) ON CONFLICT DO NOTHING RETURNING *', [id, skill_id]);
   res.status(201).json(rows[0] || { inserted: false });
