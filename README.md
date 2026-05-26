@@ -53,3 +53,8 @@ MIT
 - Entitlements: GET/POST /api/entitlements
 - Credit Pools: GET/POST /api/credit-pools
 - Activation Check: GET /api/activation/workspace/:id
+
+### Agents, Tasks & Routing API (partial)
+- Agents: GET/POST/PUT/DELETE /api/agents and /api/agents/:id
+- Tasks:  GET/POST/PUT/DELETE /api/tasks and /api/tasks/:id
+- Routing: POST /api/route (recommend), POST /api/route/apply (persist + run stub)

@@ -35,4 +35,4 @@ The platform is designed as a control plane for skills, licensing, routing, appr
 - Health endpoints for monitoring
 - Structured logging for observability
 - Environment validation for configuration consistency
-\n## [2026-05-26T09:18:10Z] THU-29 - Governance Layer (Risk, Approvals, Policies)\n- Migration 0006_governance.sql adds risk_tiers, approval_gates, approval_requests, enterprise_policies.\n- Governance routes: risk tier CRUD (list/create), approval gate create/list, policy evaluation (pre-run blocking), approvals decision/evidence, approvals listing.\n- Wired governance routes into API.\n- Blocks execution by transitioning runs to 'awaiting_approval' and recording audit entries when gates trigger.\n
+\n## [2026-05-26T09:11:24Z] THU-28 - Skill Run Tracking & Metering\n- Added DB migration 0005_skill_runs_audit.sql defining skill_runs, audit_logs, usage_charges, and run_state enum.\n- Implemented backend routes: /api/runs (create, state updates, output hashing, audit log append, credit charge), and queries.\n- Added metering lib to post usage charges and update credit_pools tallies.\n- Wired routes into Express app.\n
