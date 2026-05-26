@@ -19,17 +19,17 @@ WHERE NOT EXISTS (SELECT 1 FROM skill_sources s WHERE s.name=x.name);
 WITH src AS (
   SELECT name, id FROM skill_sources
 )
-INSERT INTO skills(key,name,source_id,lifecycle,department_tags,industry_tags,risk_tier,credit_cost,required_approvals,allowed_tools,metadata,trust,review,metadata)
-SELECT x.key, x.name, s.id, 'enabled'::lifecycle_state, x.dept, x.ind, x.risk, x.cost, x.approvals, '[]'::jsonb, '{}'::jsonb, x.trust::trust_level, x.review::review_status, '{}'::jsonb
+INSERT INTO skills(key,name,source_id,lifecycle,department_tags,industry_tags,risk_tier,credit_cost,required_approvals,allowed_tools,metadata,trust,review)
+SELECT x.key, x.name, s.id, 'enabled'::lifecycle_state, x.dept, x.ind, x.risk, x.cost, x.approvals, '[]'::jsonb, '{}'::jsonb, x.trust::trust_level, x.review::review_status
 FROM (
   VALUES
-    ('mkt_campaign_brief','Campaign Brief Generator','Marketing Skills',ARRAY['marketing'],ARRAY['saas','retail'],1,10,0,'reviewed'),
-    ('eng_pr_summary','PR Summary Bot','Engineering Skills',ARRAY['engineering'],ARRAY['saas'],1,8,0,'reviewed'),
-    ('prod_spec_outline','Spec Outline Assistant','Product Skills',ARRAY['product'],ARRAY['saas'],1,12,0,'reviewed'),
-    ('grc_policy_check','Policy Checker','Security Skills',ARRAY['security','grc'],ARRAY['saas','finserv','healthcare'],3,20,1,'reviewed'),
-    ('ops_runbook','Runbook Draft','Ops Skills',ARRAY['operations'],ARRAY['saas'],1,6,0,'reviewed'),
-    ('cs_response_helper','CS Response Helper','Customer Success Skills',ARRAY['customer_success'],ARRAY['saas','retail'],1,5,0,'reviewed')
-) AS x(key,name,src_name,dept,ind,risk,cost,approvals,review)
+    ('mkt_campaign_brief','Campaign Brief Generator','Marketing Skills',ARRAY['marketing'],ARRAY['saas','retail'],1,10,0,'reviewed','reviewed'),
+    ('eng_pr_summary','PR Summary Bot','Engineering Skills',ARRAY['engineering'],ARRAY['saas'],1,8,0,'reviewed','reviewed'),
+    ('prod_spec_outline','Spec Outline Assistant','Product Skills',ARRAY['product'],ARRAY['saas'],1,12,0,'reviewed','reviewed'),
+    ('grc_policy_check','Policy Checker','Security Skills',ARRAY['security','grc'],ARRAY['saas','finserv','healthcare'],3,20,1,'trusted','reviewed'),
+    ('ops_runbook','Runbook Draft','Ops Skills',ARRAY['operations'],ARRAY['saas'],1,6,0,'reviewed','reviewed'),
+    ('cs_response_helper','CS Response Helper','Customer Success Skills',ARRAY['customer_success'],ARRAY['saas','retail'],1,5,0,'reviewed','reviewed')
+) AS x(key,name,src_name,dept,ind,risk,cost,approvals,trust,review)
 JOIN src s ON s.name=x.src_name
 WHERE NOT EXISTS (SELECT 1 FROM skills k WHERE k.key=x.key);
 

@@ -40,9 +40,12 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   plan_id INTEGER REFERENCES subscription_plans(id) ON DELETE RESTRICT,
   status TEXT NOT NULL DEFAULT 'active',
   starts_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  ends_at TIMESTAMPTZ,
-  UNIQUE(workspace_id, status) WHERE status='active'
+  ends_at TIMESTAMPTZ
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS subscriptions_active_workspace_unique
+  ON subscriptions (workspace_id)
+  WHERE status = 'active';
 
 CREATE TABLE IF NOT EXISTS credit_pools (
   id SERIAL PRIMARY KEY,

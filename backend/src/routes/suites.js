@@ -10,8 +10,8 @@ async function skillIsSafe(skill_id){
   const reasons=[];
   if (s.quarantined) reasons.push('quarantined');
   if (s.review !== 'reviewed') reasons.push('unreviewed');
-  if (!s.pinned_commit and !s.pinned_ref) reasons.push('unpinned');
-  if (!s.instruction_only and s.trust !== 'trusted' and !s.sandbox_required) reasons.push('sandbox_required_not_set');
+  if (!s.pinned_commit && !s.pinned_ref) reasons.push('unpinned');
+  if (!s.instruction_only && s.trust !== 'trusted' && !s.sandbox_required) reasons.push('sandbox_required_not_set');
   return { allowed: reasons.length===0, reasons };
 }
 
