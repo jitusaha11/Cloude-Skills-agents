@@ -41,3 +41,8 @@ The platform is designed as a control plane for skills, licensing, routing, appr
 \n## [2026-05-26T10:46:57Z] THU-32 - Reporting & Analytics\n- Added backend /api/reports endpoints: credits summary, usage by workspace, adoption, agent utilization, governance, billing, cross-sell.\n- Wired reports routes into Express.\n- Added frontend Reports page to surface credit consumption, adoption, utilization, governance, and billing summaries; linked in Nav.\n- Outputs are export-ready via JSON table endpoints.\n
 \n## [2026-05-26T10:54:11Z] THU-33 - Demo Seed Content\n- Added migration 0007_demo_seed.sql to seed department suites, industry overlays, demo customers/workspaces, entitlements, agent profiles, and sample run/usage/audit.\n- Skills seeded across Marketing, Engineering, Product, Security/GRC, Operations, Customer Success, with packages and trust/review states.\n- Overlay-to-suite starter pack mappings included.\n
 \n## [2026-05-26T11:06:18Z] THU-34 - Testing, Docs, Onboarding, Hardening\n- Exported Express app (backend/src/app.js) for testability; index now composes and listens.\n- Added Jest + Supertest tests (health, reports, governance presence).\n- Authored docs: SETUP, ONBOARDING, ARCHITECTURE, OPERATIONS, RELEASE_CHECKLIST, DEFERRED_ITEMS, PR_SUMMARY.\n- Expanded .env.example with required env vars.\n
+
+## [2026-05-28] Handbook Alignment Snapshot
+- Added `docs/HANDBOOK_GAP_ANALYSIS.md` as a requirements-to-implementation map.
+- Confirmed architecture currently covers core control-plane modules (registry, commercial, routing, runs, security, reporting).
+- Confirmed major pending architecture layers: enterprise auth/RBAC, integration framework, queue workers, hybrid search/RAG, and deeper policy engine.

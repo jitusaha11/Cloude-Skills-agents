@@ -7,12 +7,14 @@ const q = (t, p = []) => pool.query(t, p).then(r => r.rows);
 router.get('/reports/credits/summary', async (req, res) => {
   const { workspace_id } = req.query;
   const params = [];
-  let where = '';
-  if (workspace_id) { params.push(workspace_id); where = `WHERE workspace_id=$${params.length}`; }
+  let where = `WHERE charged_at >= now() - INTERVAL '30 days'`;
+  if (workspace_id) {
+    params.push(workspace_id);
+    where = `WHERE workspace_id=$${params.length} AND charged_at >= now() - INTERVAL '30 days'`;
+  }
   const rows = await q(
     `SELECT date_trunc('day', charged_at) AS day, SUM(credits) AS credits
      FROM usage_charges ${where}
-     AND charged_at >= now() - INTERVAL '30 days'
      GROUP BY 1 ORDER BY 1`, params);
   const totals = await q(`SELECT COALESCE(SUM(credits),0) AS total FROM usage_charges ${where}`, params);
   res.json({ by_day: rows, total: totals[0]?.total || 0 });
@@ -53,10 +55,14 @@ router.get('/reports/agents/utilization', async (req, res) => {
 
 // Governance events: approvals required/granted/denied counts from audit logs
 router.get('/reports/governance', async (_req, res) => {
-  const reqd = await q(`SELECT COUNT(*) FROM audit_logs WHERE event_type='approval_required'`);
-  const granted = await q(`SELECT COUNT(*) FROM audit_logs WHERE event_type='approval_granted'`);
-  const denied = await q(`SELECT COUNT(*) FROM audit_logs WHERE event_type='approval_denied'`);
-  res.json({ approval_required: Number(reqd[0].count), approval_granted: Number(granted[0].count), approval_denied: Number(denied[0].count) });
+  const reqd = await q(`SELECT COUNT(*)::int AS count FROM audit_logs WHERE event_type='approval_required'`);
+  const granted = await q(`SELECT COUNT(*)::int AS count FROM audit_logs WHERE event_type='approval_granted'`);
+  const denied = await q(`SELECT COUNT(*)::int AS count FROM audit_logs WHERE event_type='approval_denied'`);
+  res.json({
+    approval_required: Number(reqd[0]?.count ?? 0),
+    approval_granted: Number(granted[0]?.count ?? 0),
+    approval_denied: Number(denied[0]?.count ?? 0),
+  });
 });
 
 // Billing-ready analytics summaries: monthly credits per workspace/customer

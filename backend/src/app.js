@@ -9,6 +9,7 @@ const tasks = require('./routes/tasks');
 const routing = require('./routes/routing');
 const security = require('./routes/security');
 const reports = require('./routes/reports');
+const runs = require('./routes/runs');
 
 function buildApp() {
   const app = express();
@@ -22,6 +23,7 @@ function buildApp() {
   app.use('/api', tasks);
   app.use('/api', routing);
   app.use('/api', security);
+  app.use('/api', runs);
   app.use('/api', reports);
   app.get('/', (_req, res) => res.json({ name: 'Enterprise Claude Skills API', status: 'ok' }));
   return app;

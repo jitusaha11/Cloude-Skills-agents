@@ -32,3 +32,8 @@ MANDATORY AFTER COMPLETION:
 \n## [2026-05-26T10:46:57Z] THU-32 Decisions\n- Keep aggregation in SQL for performance and exportability.\n- Governance signals read from audit_logs events to avoid tight coupling to approval tables.\n- Cross-sell insights based on overlay_suites + active workspace assignments.\n
 \n## [2026-05-26T10:54:11Z] THU-33 Decisions\n- Implemented seeding as an idempotent migration to keep environments consistent.\n- Used ON CONFLICT/WHERE NOT EXISTS guards to allow re-runs safely.\n- Minimal demo run+usage seeded to light up reporting/ledgers without heavy data volume.\n
 \n## [2026-05-26T11:06:18Z] THU-34 Decisions\n- Avoided DB-coupled tests; used mocked pool to keep unit/integration portable.\n- Introduced app.js to enable route-level testing without a server.\n- Deferred real auth, escalation workers, and charting to DEFERRED_ITEMS.md.\n
+
+## [2026-05-28] Gap-Assessment Decisions
+- Use handbook-aligned status tiers (`Implemented`, `Partial`, `Missing`) for roadmap communication.
+- Treat current codebase as a control-plane foundation, not a finished enterprise platform.
+- Prioritize next milestones in order: auth/RBAC, approvals workflow, workers/runtime, integrations, then knowledge/search depth.
